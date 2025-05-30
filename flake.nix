@@ -3,14 +3,14 @@
 
   inputs = {};
 
-  outputs = { self }: {
-    templates = {
+  outputs = _: {
+    templates = rec {
+      default = rust;
+
       rust = {
         path = ./rust;
         description = "Rust project flake template";
       };
     };
-
-    templates.default = self.templates.rust;
   };
 }
