@@ -13,10 +13,17 @@
       "aarch64-darwin"
     ];
     forEachSystem = nixpkgs.lib.genAttrs systems;
-    callPkg = sys: nixpkgs.legacyPackages.${sys}.callPackage;
+    pkgs = nixpkgs.legacyPackages;
+		# -- MAIN PKG --
+		mainPkg = { rustPlatform }: rustPlatform.buildRustPackage {
+			pname = "rust-template";
+			version = "0.1.0";
+			src = ./.;
+			cargoLock.lockFile = ./Cargo.lock;
+		};
   in {
     packages = forEachSystem (system: {
-      default = callPkg system ./default.nix {};
+      default = pkgs.${system}.callPackage mainPkg {};
     });
   };
 }
