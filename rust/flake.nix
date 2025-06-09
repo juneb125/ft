@@ -14,13 +14,14 @@
     ];
     forEachSystem = nixpkgs.lib.genAttrs systems;
     pkgs = nixpkgs.legacyPackages;
-		# -- MAIN PKG --
-		mainPkg = { rustPlatform }: rustPlatform.buildRustPackage {
-			pname = "rust-template";
-			version = "0.1.0";
-			src = ./.;
-			cargoLock.lockFile = ./Cargo.lock;
-		};
+    # -- MAIN PKG --
+    mainPkg = {rustPlatform}:
+      rustPlatform.buildRustPackage {
+        pname = "rust-template";
+        version = "0.1.0";
+        src = ./.;
+        cargoLock.lockFile = ./Cargo.lock;
+      };
   in {
     packages = forEachSystem (system: {
       default = pkgs.${system}.callPackage mainPkg {};
