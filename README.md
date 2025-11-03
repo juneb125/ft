@@ -35,33 +35,33 @@ nix flake new -t github:juneb125/ft#<template-name>
 1. add this repository as an input in your `flake.nix`
     ```nix
     {
-        inputs = {
-            # ...
-            flake-templates.url = "github:juneb125/ft";
-        };
+      inputs = {
+        # ...
+        flake-templates.url = "github:juneb125/ft";
+      };
     }
     ```
 2. add the `templates` attribute to your flake's outputs
     * if you want to use all of these templates, and only these templates, import the whole module:
         ```nix
         {
+          # ...
+          outputs = { ... }: {
             # ...
-            outputs = { ... }: {
-                # ...
-                templates = import inputs.flake-templates {};
-            };
+            inherit (inputs.flake-templates) templates;
+          };
         }
         ```
     * if you only want to use certain templates, or you have templates from other sources, use nix's `inherit` syntax:
         ```nix
         {
+          # ...
+          outputs = { ... }: {
             # ...
-            outputs = { ... }: {
-                # ...
-                templates = {
-                    # example: just use the 'rust' template
-                    inherit (inputs.flake-templates) rust;
-                };
+            templates = {
+              # example: just use the 'rust' template
+              inherit (inputs.flake-templates.templates) rust;
             };
+          };
         }
         ```
